@@ -1,9 +1,46 @@
-import { Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material'
+import { Alert, Box, Button, Card, CardContent, Snackbar, Stack, TextField, Typography } from '@mui/material'
 import Logo from "../assets/navbar_logo.png"
+import { useContext, useState } from 'react'
+import { AuthContext } from '../context/auth.context'
+import service from '../services/config.services'
+import { useNavigate } from 'react-router-dom'
+import { ToastContext } from '../context/toast.context'
 
 function LoginPage() {
 
+    const navigate = useNavigate()
+
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const { setIsLoggedIn, setLoggedInUser } = useContext(AuthContext)
+    const { showToast } = useContext(ToastContext)
+
+
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handlePasswordChange = (e) => setPassword(e.target.value);
+
+    const handleLogin = async (e) => {
+        const body = { email, password }
+        try {
+            const response = await service.post(`/auth/login`, body)
+            console.log(response)
+            localStorage.setItem("authToken", response.data.authToken)
+            setIsLoggedIn(true)
+            setLoggedInUser(response.data.payload)
+            navigate("/")
+            showToast("Login successful!", "success")
+        } catch (error) {
+            if (error.response.status === 400) {
+                showToast(error.response.data.errorMessage, "error")
+            } else {
+                console.log(error)
+            }
+        }
+    }
+
     const textfieldStyle = { width: "60%", minWidth: 250, alignSelf: "center" }
+
     return (
         <Box
             sx={{
@@ -23,9 +60,9 @@ function LoginPage() {
                         Login to WanderMemo
                     </Typography>
                     <Stack spacing={2}>
-                        <TextField label="Email" type='email' sx={textfieldStyle} variant='outlined'/>
-                        <TextField label="Password" type='password' sx={textfieldStyle} variant='outlined'/>
-                        <Button variant='contained' size='large' sx={{
+                        <TextField label="Email" type='email' value={email} onChange={handleEmailChange} sx={textfieldStyle} variant='outlined' />
+                        <TextField label="Password" type='password' value={password} onChange={handlePasswordChange} sx={textfieldStyle} variant='outlined' />
+                        <Button variant='contained' size='large' onClick={handleLogin} sx={{
                             ...textfieldStyle, mt: 1, py: 2, borderRadius: 3, fontWeight: 600
                         }}>
                             Login
