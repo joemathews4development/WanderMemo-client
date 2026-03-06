@@ -10,6 +10,7 @@ import AccountsPage from './pages/AccountsPage';
 import AboutPage from './pages/AboutPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
+import LoggedIn from './componnets/LoggedIn';
 
 function App() {
 
@@ -28,10 +29,10 @@ function App() {
       <Navbar handleToggleTheme={handleToggleTheme}/>
       <Box sx={{ flexGrow: 1 }}>
         <Routes>
-          <Route path='/' element={<SignupPage/>}/>
-          <Route path='/feeds' element={<FeedsPage/>}/>
-          <Route path='/users' element={<UsersPage/>}/>
-          <Route path='/account' element={<AccountsPage/>}/>
+          <Route path='/' element={<LoggedIn><HomePage/></LoggedIn>}/>
+          <Route path='/feeds' element={<LoggedIn><FeedsPage/></LoggedIn>}/>
+          <Route path='/users' element={<LoggedIn><UsersPage/></LoggedIn>}/>
+          <Route path='/account' element={<LoggedIn><AccountsPage/></LoggedIn>}/>
           <Route path='/about' element={<AboutPage/>}/>
           <Route path='/signup' element={<SignupPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
