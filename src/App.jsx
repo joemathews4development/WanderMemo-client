@@ -11,6 +11,7 @@ import AboutPage from './pages/AboutPage';
 import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import LoggedIn from './componnets/LoggedIn';
+import TripDetailsPage from './pages/TripDetailsPage';
 
 function App() {
 
@@ -36,6 +37,8 @@ function App() {
           <Route path='/about' element={<AboutPage/>}/>
           <Route path='/signup' element={<SignupPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
+
+          <Route path='/trips/:tripId' element={<LoggedIn><TripDetailsPage/></LoggedIn>}/>
         </Routes>
       </Box>
     </Box>

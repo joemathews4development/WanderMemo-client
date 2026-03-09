@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 function FeedsPage() {
+
   return (
     <div>FeedsPage</div>
   )
