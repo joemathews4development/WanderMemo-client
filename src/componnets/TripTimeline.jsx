@@ -3,9 +3,10 @@ import { Box, Card, CardContent, Chip, ImageList, ImageListItem, Typography } fr
 import React, { useEffect, useState } from 'react'
 import MemoryDetailsModal from './MemoryDetailsModalComponent'
 
-function TripTimeline({ memories }) {
+function TripTimeline({ memories, onSave }) {
     const [open, setOpen] = useState(false)
     const [selectedMemory, setSelectedMemory] = useState(null)
+
     return (
         <>
             <Timeline position="alternate">
@@ -83,7 +84,10 @@ function TripTimeline({ memories }) {
                 })}
             </Timeline>
 
-            <MemoryDetailsModal open={open} onClose={() => setOpen(false)} memory={selectedMemory} />
+            <MemoryDetailsModal 
+                isNew={false} open={open} onClose={() => setOpen(false)} memory={selectedMemory}  
+                onSave={onSave} disableRestoreFocus 
+            />
         </>
 
     )

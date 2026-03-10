@@ -2,10 +2,12 @@ import { Box, Button, colors, Stack, Typography } from '@mui/material'
 import React, { useState } from 'react'
 import service from '../services/config.services'
 import EditTripModal from './EditTripModalComponent'
+import MemoryDetailsModal from './MemoryDetailsModalComponent'
 
-function TripHeaderComponent({ trip }) {
+function TripHeaderComponent({ trip, loadData }) {
 
-    const [open, setOpen] = useState(false)
+    const [openEditModal, setOpenEditModal] = useState(false)
+    const [openAddMemoryModal, setOpenAddMemoryModal] = useState(false)
 
     const handleSave = async (updatedTrip) => {
         console.log(updatedTrip)
@@ -23,13 +25,17 @@ function TripHeaderComponent({ trip }) {
             <Typography sx={{ mt: 1 }}>{trip.startDate} → {trip.endDate}</Typography>
             <Typography sx={{ mt: 1 }}>Cities: {trip.cities.map(city => city.city).join(", ")}</Typography>
             <Stack direction="row" spacing={2} mt={3}>
-                <Button variant="contained" sx={{ backgroundColor: "white", color: "#764ba2" }} onClick={() => setOpen(true)}>
+                <Button variant="contained" sx={{ backgroundColor: "white", color: "#764ba2" }} onClick={() => setOpenEditModal(true)}>
                     Edit Trip
                 </Button>
-                <EditTripModal open={open} onClose={() => setOpen(false)} trip={trip} onSave={handleSave}/>
-                <Button variant="outlined" sx={{ color: "white", borderColor: "white" }}>
+                <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} trip={trip} onSave={handleSave}/>
+                <Button variant="outlined" sx={{ color: "white", borderColor: "white" }} onClick={() => setOpenAddMemoryModal(true)}>
                     Add Memory
                 </Button>
+                <MemoryDetailsModal 
+                    isNew={true} open={openAddMemoryModal} onClose={() => setOpenAddMemoryModal(false)} 
+                    onSave={loadData} trip={trip} disableRestoreFocus
+                />
             </Stack>
         </Box>
     )

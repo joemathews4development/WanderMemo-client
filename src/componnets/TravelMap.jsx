@@ -12,8 +12,10 @@ function TravelMap({ trips }) {
     })
     L.Marker.prototype.options.icon = DefaultIcon
     const cities = trips.flatMap(trip => trip.cities)
+    const center = trips.length === 1 ? [cities[0].latitude, cities[0].longitude] : [20, 0]
+    const zoom = trips.length === 1 ? 7.5 : 3.25
     return (
-        <MapContainer center={[20, 0]} zoom={3.25} style={{ height: "400px", width: "100%", borderRadius: "12px" }}>
+        <MapContainer center={center} zoom={zoom} style={{ height: "400px", width: "100%", borderRadius: "12px" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {cities.map((city) => {
                 return (
