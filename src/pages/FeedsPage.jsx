@@ -15,20 +15,15 @@ function FeedsPage() {
   const loadMemories = async () => {
 
     if (loading || !hasMore) return
-
     setLoading(true)
-
     const res = await service.get(`/memories?page=${page}`)
-
     if (res.data.length === 0) {
       setHasMore(false)
       setLoading(false)
       return
     }
-
     setMemories(prev => [...prev, ...res.data])
     setPage(prev => prev + 1)
-
     setLoading(false)
   }
 
@@ -37,25 +32,19 @@ function FeedsPage() {
   }, [])
 
   const lastMemoryRef = (node) => {
-
     if (loading) return
-
     if (observer.current) observer.current.disconnect()
-
     observer.current = new IntersectionObserver(entries => {
       if (entries[0].isIntersecting && hasMore) {
         loadMemories()
       }
     })
-
     if (node) observer.current.observe(node)
   }
 
   return (
     <Box sx={{ maxWidth: 700, mx: "auto", p: 2 }}>
-
       {memories.map((memory, index) => {
-
         if (memories.length === index + 1) {
           return (
             <div ref={lastMemoryRef} key={memory._id}>
@@ -63,13 +52,9 @@ function FeedsPage() {
             </div>
           )
         }
-
         return <MemoryFeedCard key={memory._id} memory={memory} />
-
       })}
-
       {loading && <CircularProgress />}
-
     </Box>
   )
 }
