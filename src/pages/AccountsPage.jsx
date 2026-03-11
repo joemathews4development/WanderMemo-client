@@ -1,7 +1,10 @@
 import {
   Box, Card, CardContent, Typography, TextField, Button, Avatar, Stack,
-  FormControl, InputLabel, Select, MenuItem, FormHelperText
+  FormControl, InputLabel, Select, MenuItem, FormHelperText, Dialog,
+  DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton
 } from "@mui/material"
+import LogoutIcon from "@mui/icons-material/Logout";
+import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/auth.context"
 import { useNavigate } from "react-router-dom"
@@ -20,6 +23,8 @@ function AccountsPage() {
   const [passwordLoading, setPasswordLoading] = useState(false)
   const [emailLoading, setEmailLoading] = useState(false)
 
+  const [open, setOpen] = useState(false)
+
   const [profile, setProfile] = useState({
     firstName: loggedInUser.firstName,
     lastName: loggedInUser.lastName,
@@ -36,6 +41,14 @@ function AccountsPage() {
       ...profile,
       [e.target.name]: e.target.value
     })
+  }
+
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+
+  const confirmLogout = () => {
+    handleClose()
+    handleLogout()
   }
 
   const saveProfile = async () => {
@@ -193,9 +206,28 @@ function AccountsPage() {
         </FormHelperText>
       </FormControl>
       {/* LOGOUT */}
-      <Button variant="outlined" color="error" fullWidth onClick={handleLogout}>
+      <Button variant="outlined" color="error" fullWidth onClick={handleOpen}>
         Logout
       </Button>
+      <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth>
+        <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <WarningAmberIcon color="warning" />
+          Confirm Logout
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to log out of WanderMemo?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions sx={{ px: 3, pb: 2 }}>
+          <Button onClick={handleClose} variant="outlined">
+            Cancel
+          </Button>
+          <Button onClick={confirmLogout} variant="contained" color="error" startIcon={<LogoutIcon />}>
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   )
 }
