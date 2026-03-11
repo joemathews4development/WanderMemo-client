@@ -42,7 +42,7 @@ function TripDetailsPage() {
             <TripHeaderComponent trip={trip} loadData={getData}/>
             <Box sx={{ my: 4 }}><TravelMap trips={[trip]}  screenMode={"Memories"}/></Box>
             <Typography variant="h5" fontWeight={600} my={2} textAlign="center">Memory Timeline</Typography>
-            <TripTimeline memories={memories} onSave={getData}/>
+            <TripTimeline memories={memories} reloadData={getData}/>
         </Box>
     )
 }

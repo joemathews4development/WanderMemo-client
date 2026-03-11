@@ -40,7 +40,7 @@ function TripHeaderComponent({ trip, loadData }) {
                 </Button>
                 <MemoryDetailsModal 
                     isNew={true} open={openAddMemoryModal} onClose={() => setOpenAddMemoryModal(false)} 
-                    onSave={loadData} trip={trip} disableRestoreFocus
+                    reloadData={loadData} trip={trip} disableRestoreFocus mode={"create"}
                 />
             </Stack>
         </Box>
