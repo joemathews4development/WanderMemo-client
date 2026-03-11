@@ -23,20 +23,21 @@ function UsersPage() {
       setUsers([])
       return
     }
-    async function fetchUsers() {
-      try {
-        setLoading(true)
-        const res = await service.get(`/users?search=${debouncedSearch}`)
-        console.log("overhere", res)
-        setUsers(res.data)
-      } catch (err) {
-        console.error(err)
-      } finally {
-        setLoading(false)
-      }
-    }
     fetchUsers()
   }, [debouncedSearch])
+
+  const fetchUsers = async () => {
+    try {
+      setLoading(true)
+      const res = await service.get(`/users?search=${debouncedSearch}`)
+      console.log("overhere", res)
+      setUsers(res.data)
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleFollow = async (user) => {
     try {
@@ -44,7 +45,7 @@ function UsersPage() {
         following: user._id,
         status: "Pending"
       })
-      setDebouncedSearch(search)
+      fetchUsers()
     } catch (err) {
       console.error(err)
     }
@@ -84,6 +85,7 @@ function UsersPage() {
         placeholder="Search by name..."
         fullWidth
         value={search}
+        disabled={loading}
         onChange={(e) => setSearch(e.target.value)}
       />
       {/* results */}
@@ -99,20 +101,20 @@ function UsersPage() {
               <Card key={user._id} sx={{ cursor: "pointer" }}>
                 <CardContent>
                   <Stack direction="row" justifyContent="space-between" alignItems="center">
-                  <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar src={user.profileImage}>
-                      {user.firstName[0]}
-                    </Avatar>
-                    <Box>
-                      <Typography fontWeight={600}>
-                        {user.firstName} {user.lastName}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {user.email}
-                      </Typography>
-                    </Box>
-                  </Stack>
-                  {renderStatus(user)}
+                    <Stack direction="row" spacing={2} alignItems="center">
+                      <Avatar src={user.profileImage}>
+                        {user.firstName[0]}
+                      </Avatar>
+                      <Box>
+                        <Typography fontWeight={600}>
+                          {user.firstName} {user.lastName}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {user.email}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                    {renderStatus(user)}
                   </Stack>
                 </CardContent>
               </Card>

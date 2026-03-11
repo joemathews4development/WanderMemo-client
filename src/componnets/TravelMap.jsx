@@ -19,7 +19,7 @@ function TravelMap({ trips, screenMode }) {
     const height = isScreenForTrips ? "850px" : "400px"
     const positions = cities?.filter(c => c.latitude && c.longitude).map(city => [city.latitude, city.longitude])
     return (
-        <MapContainer center={center} zoom={zoom} style={{ height: height, width: "100%", borderRadius: "12px" }}>
+        <MapContainer center={center} zoom={zoom} scrollWheelZoom={false} style={{ height: height, width: "100%", borderRadius: "12px" }}>
             <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             {cities.map((city) => {
                 return (

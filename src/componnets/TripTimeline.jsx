@@ -7,6 +7,14 @@ function TripTimeline({ memories, reloadData }) {
     const [open, setOpen] = useState(false)
     const [selectedMemory, setSelectedMemory] = useState(null)
 
+    if (memories.length === 0) {
+        return(
+            <Typography variant="h6" textAlign="center" color="text.secondary">
+                No memories yet. Start capturing your journey ✈️
+            </Typography>
+        )
+    }
+
     return (
         <>
             <Timeline position="alternate">
@@ -78,12 +86,9 @@ function TripTimeline({ memories, reloadData }) {
                                 </Card>
                             </TimelineContent>
                         </TimelineItem>
-
-
                     )
                 })}
             </Timeline>
-
             <MemoryDetailsModal 
                 isNew={false} open={open} onClose={() => setOpen(false)} memory={selectedMemory}  
                 reloadData={reloadData} disableRestoreFocus mode={"edit"}

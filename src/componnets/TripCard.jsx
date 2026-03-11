@@ -13,8 +13,8 @@ function TripCard({ trip }) {
             }}
         >
             <CardMedia component="img" height="160" image={
-                /*trip.coverImage ||*/
-                "https://source.unsplash.com/600x400/?travel"
+                trip.image ||
+                "https://picsum.photos/1200/600"
             } />
             <CardContent>
                 <Typography variant='h6'>{trip.title}</Typography>
