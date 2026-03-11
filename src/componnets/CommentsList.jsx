@@ -1,10 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
 import service from '../services/config.services'
 import LoadingScreen from './LoadinScreen'
-import { Avatar, Box, Button, Stack, TextField, Typography } from '@mui/material'
+import { Avatar, Box, Button, IconButton, Stack, TextField, Typography } from '@mui/material'
+import DeleteIcon from "@mui/icons-material/Delete"
 import { ToastContext } from '../context/toast.context'
+import { AuthContext } from '../context/auth.context'
 
-function CommentsList({ memoryId }) {
+function CommentsList({ memoryId, loadMemory }) {
 
     const [comments, setComments] = useState([])
     const [newComment, setNewComment] = useState("")
@@ -12,6 +14,8 @@ function CommentsList({ memoryId }) {
     const [loading, setLoading] = useState(true)
 
     const { showToast } = useContext(ToastContext)
+
+    const { loggedInUser } = useContext(AuthContext)
 
     useEffect(() => {
         fetchComments()
@@ -35,6 +39,7 @@ function CommentsList({ memoryId }) {
             await service.post(`/comments/memories/${memoryId}`, { content: newComment })
             showToast("Added comment successfully", "success")
             setNewComment("")
+            loadMemory()
             fetchComments()
         } catch (error) {
             console.log(error)
@@ -45,7 +50,7 @@ function CommentsList({ memoryId }) {
     const addCommentComponent = () => {
         return (
             <Box sx={{ display: "flex", gap: 2 }}>
-                <TextField 
+                <TextField
                     placeholder="Write a comment..." value={newComment} size="small"
                     onChange={(e) => setNewComment(e.target.value)} fullWidth
                 />
@@ -56,6 +61,18 @@ function CommentsList({ memoryId }) {
         )
     }
 
+    const deleteComment = async (commentId) => {
+        try {
+            await service.delete(`/comments/${commentId}`)
+            showToast("Deleted comment successfully", "success")
+            loadMemory()
+            fetchComments()
+        } catch (error) {
+            console.log(error)
+            showToast("Deleting comment failed", "error")
+        }
+    }
+
     if (loading) {
         return <LoadingScreen text='Loading Comments...' fullPage />
     }
@@ -63,8 +80,8 @@ function CommentsList({ memoryId }) {
     if (comments.length === 0) {
         return (
             <>
-            <Typography variant="h5" sx={{ textAlign: "center", my: 4 }}>There are no comments</Typography>
-            {addCommentComponent()}
+                <Typography variant="h5" sx={{ textAlign: "center", my: 4 }}>There are no comments</Typography>
+                {addCommentComponent()}
             </>
         )
     }
@@ -74,7 +91,7 @@ function CommentsList({ memoryId }) {
             <Stack spacing={2} sx={{ mb: 3 }}>
                 {comments.map((comment) => {
                     return (
-                        <Box key={comment._id} sx={{ display: "flex", gap: 2 }}>
+                        <Box key={comment._id} sx={{ display: "flex", alignItems: "flex-start", gap: 2 }}>
                             <Avatar src={comment.user.profileImage}>
                                 {comment.user.firstName?.[0]}
                             </Avatar>
@@ -86,6 +103,14 @@ function CommentsList({ memoryId }) {
                                     {comment.content}
                                 </Typography>
                             </Box>
+                            {comment.user._id === loggedInUser._id && (
+                                <IconButton
+                                    size="small"
+                                    onClick={() => deleteComment(comment._id)}
+                                >
+                                    <DeleteIcon fontSize="small" />
+                                </IconButton>
+                            )}
                         </Box>
                     )
                 })}

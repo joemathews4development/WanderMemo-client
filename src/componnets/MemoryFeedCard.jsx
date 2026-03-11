@@ -6,9 +6,7 @@ import { useState } from "react"
 import CommentsList from "./CommentsList"
 
 function MemoryFeedCard(props) {
-     console.log(props.memory)
     const reactions = ["👍", "❤️", "😂", "😮", "😢", "😡", "🔥"]
-
     const [memory, setMemory] = useState(props.memory)
 
     const [anchorEl, setAnchorEl] = useState(null)
@@ -34,7 +32,7 @@ function MemoryFeedCard(props) {
             console.log(error)
         }
     }
-    console.log(memory.reactions)
+
     return (
         <Card sx={{ mb: 3 }}>
             <CardHeader
@@ -62,7 +60,7 @@ function MemoryFeedCard(props) {
                 />
             )}
             <Box sx={{ display: "flex", gap: 1 }}>
-                <Button startIcon={<InsertEmoticonIcon />} onClick={(e) => setAnchorEl(e.currentTarget)}>
+                <Button startIcon={<span style={{ fontSize: 18 }}>👍</span>} onClick={(e) => setAnchorEl(e.currentTarget)}>
                     {Object.values(memory.reactions).reduce((sum, value) => sum + value, 0)}
                 </Button>
                 <Popover
@@ -83,13 +81,13 @@ function MemoryFeedCard(props) {
                     </Box>
 
                 </Popover>
-                <Button startIcon={<ChatBubbleOutlineIcon />} onClick={() => setOpenComments(true)}>
-                    Comment
+                <Button startIcon={<span style={{ fontSize: 18 }}>💬</span>} onClick={() => setOpenComments(true)}>
+                    {memory.commentCount}
                 </Button>
                 <Dialog open={openComments} onClose={() => setOpenComments(false)} fullWidth maxWidth="lg">
                     <DialogTitle>Comments</DialogTitle>
                     <DialogContent>
-                        <CommentsList memoryId={memory._id} />
+                        <CommentsList memoryId={memory._id} loadMemory={loadMemory}/>
                     </DialogContent>
                 </Dialog>
             </Box>
