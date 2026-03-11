@@ -1,9 +1,10 @@
-import { Box, Button, colors, Stack, Typography } from '@mui/material'
-import React, { useContext, useState } from 'react'
+import { Box, Button, Stack, Typography } from '@mui/material'
+import { useContext, useState } from 'react'
 import service from '../services/config.services'
 import EditTripModal from './EditTripModalComponent'
 import MemoryDetailsModal from './MemoryDetailsModalComponent'
 import { ToastContext } from '../context/toast.context'
+import { MODAL_VIEW_MODES as modes } from './Constants'
 
 function TripHeaderComponent({ trip, loadData }) {
 
@@ -34,13 +35,13 @@ function TripHeaderComponent({ trip, loadData }) {
                 <Button variant="contained" sx={{ backgroundColor: "white", color: "#764ba2" }} onClick={() => setOpenEditModal(true)}>
                     Edit Trip
                 </Button>
-                <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} trip={trip} onSave={handleSave} mode={"edit"}/>
+                <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} trip={trip} onSave={handleSave} mode={modes.EDIT}/>
                 <Button variant="outlined" sx={{ color: "white", borderColor: "white" }} onClick={() => setOpenAddMemoryModal(true)}>
                     Add Memory
                 </Button>
                 <MemoryDetailsModal 
                     isNew={true} open={openAddMemoryModal} onClose={() => setOpenAddMemoryModal(false)} 
-                    reloadData={loadData} trip={trip} disableRestoreFocus mode={"create"}
+                    reloadData={loadData} trip={trip} disableRestoreFocus mode={modes.CREATE}
                 />
             </Stack>
         </Box>

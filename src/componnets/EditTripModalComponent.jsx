@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Grid } from "@mui/material";
+import { MODAL_VIEW_MODES as modes } from "./Constants";
 
 function EditTripModal({ open, onClose, trip, onSave, mode }) {
   const [form, setForm] = useState({
@@ -11,7 +12,7 @@ function EditTripModal({ open, onClose, trip, onSave, mode }) {
   });
 
   useEffect(() => {
-    if (mode === "edit" && trip) {
+    if (mode === modes.EDIT && trip) {
       setForm({
         title: trip.title || "",
         description: trip.description || "",
@@ -35,7 +36,7 @@ function EditTripModal({ open, onClose, trip, onSave, mode }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-      <DialogTitle>{mode === "create" ? "Create Trip" : "Edit Trip"}</DialogTitle>
+      <DialogTitle>{mode === modes.CREATE ? "Create Trip" : "Edit Trip"}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2} mt={1}>
           <Grid size={{xs: 12}}>
@@ -47,7 +48,7 @@ function EditTripModal({ open, onClose, trip, onSave, mode }) {
               onChange={handleChange} multiline rows={3} fullWidth
             />
           </Grid>
-          {mode === "edit" && trip && (
+          {mode === modes.EDIT && trip && (
             <Grid size={{xs: 12}}>
               <TextField 
                 label="Cities" name="cities" value={trip.cities.map(city => city.city).join(", ")}
@@ -75,7 +76,7 @@ function EditTripModal({ open, onClose, trip, onSave, mode }) {
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button variant="contained" onClick={handleSubmit}>
-          {mode === "create" ? "Create Trip" : "Save Changes"}
+          {mode === modes.CREATE ? "Create Trip" : "Save Changes"}
         </Button>
       </DialogActions>
     </Dialog>

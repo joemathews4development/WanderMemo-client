@@ -1,10 +1,14 @@
-import { Box, Card, CardContent, Typography, TextField, Button, Avatar, Stack } from "@mui/material"
+import {
+  Box, Card, CardContent, Typography, TextField, Button, Avatar, Stack,
+  FormControl, InputLabel, Select, MenuItem, FormHelperText
+} from "@mui/material"
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/auth.context"
 import { useNavigate } from "react-router-dom"
 import { ToastContext } from "../context/toast.context"
 import service from "../services/config.services"
 import { passwordRegex, emailRegex } from "../componnets/Constants"
+import { USER_ROLES as roles } from "../componnets/Constants"
 
 function AccountsPage() {
   const { loggedInUser, setLoggedInUser, setIsLoggedIn } = useContext(AuthContext)
@@ -46,11 +50,11 @@ function AccountsPage() {
   }
 
   const validateEmail = async () => {
-    if(!email) {
+    if (!email) {
       setErrors = { email: "Email is mandatory" }
       return false
     }
-    if(!emailRegex.test(email)) {
+    if (!emailRegex.test(email)) {
       setErrors = { email: "Invalid email format" }
       return false
     }
@@ -59,7 +63,7 @@ function AccountsPage() {
   }
 
   const updateEmail = async () => {
-    if(!validateEmail) return
+    if (!validateEmail) return
     try {
       setEmailLoading(true)
       await service.patch("/auth/changeEmail", { newEmail: email })
@@ -74,7 +78,7 @@ function AccountsPage() {
 
   const validatePassword = () => {
     const newErrors = {}
-    if(!password.currentPassword) {
+    if (!password.currentPassword) {
       newErrors.currentPassword = "Current password is required"
     }
     if (!password.newPassword) {
@@ -87,11 +91,11 @@ function AccountsPage() {
   }
 
   const updatePassword = async () => {
-    if(!validatePassword()) return
+    if (!validatePassword()) return
     try {
       setPasswordLoading(true)
       await service.patch(
-        "/auth/changePassword", 
+        "/auth/changePassword",
         { oldPassword: password.currentPassword, newPassword: password.newPassword }
       )
       setPassword({ currentPassword: "", newPassword: "" })
@@ -178,6 +182,16 @@ function AccountsPage() {
           </Stack>
         </CardContent>
       </Card>
+      {/* ROLE */}
+      <FormControl fullWidth disabled sx={{my:2}}>
+        <InputLabel id="role-label">Role</InputLabel>
+        <Select labelId="role-label" label="Role" value={loggedInUser.role}>
+          {Object.values(roles).map((role) => <MenuItem key={role.value} value={role.value}>{role.displayLabel}</MenuItem>)}
+        </Select>
+        <FormHelperText>
+          Contact the administrator to change your role.
+        </FormHelperText>
+      </FormControl>
       {/* LOGOUT */}
       <Button variant="outlined" color="error" fullWidth onClick={handleLogout}>
         Logout

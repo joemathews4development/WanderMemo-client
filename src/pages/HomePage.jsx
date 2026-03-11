@@ -7,6 +7,7 @@ import TravelMap from '../componnets/TravelMap'
 import TripList from '../componnets/TripList'
 import { ToastContext } from '../context/toast.context'
 import EditTripModal from '../componnets/EditTripModalComponent'
+import { MODAL_VIEW_MODES as modes } from '../componnets/Constants'
 
 function HomePage() {
 
@@ -75,7 +76,7 @@ function HomePage() {
                         >
                             Create a new trip
                         </Button>
-                        <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} onSave={createNewTrip} mode={"create"}/>
+                        <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} onSave={createNewTrip} mode={modes.CREATE}/>
                     </Box>
                 </Grid>
                 <Grid size={{ xs: 12, md: 6 }}><FollowRequests requests={followRequests} /></Grid>

@@ -1,6 +1,9 @@
 import { Box, TextField, Typography, Card, CardContent, Avatar, Stack, Button, Chip } from "@mui/material"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import service from "../services/config.services"
+import { AuthContext } from "../context/auth.context"
+import LockIcon from "@mui/icons-material/Lock";
+import { Link } from "react-router-dom";
 
 function UsersPage() {
 
@@ -8,6 +11,8 @@ function UsersPage() {
   const [debouncedSearch, setDebouncedSearch] = useState("")
   const [users, setUsers] = useState([])
   const [loading, setLoading] = useState(false)
+
+  const { loggedInUser } = useContext(AuthContext)
 
   // debounce input
   useEffect(() => {
@@ -72,6 +77,29 @@ function UsersPage() {
         </Button>
       )
     }
+  }
+
+  if (loggedInUser.role !== "premium") {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 6 }}>
+        <Card sx={{ maxWidth: 500, textAlign: "center", p: 3, borderRadius: 3, boxShadow: 4 }}>
+          <CardContent>
+            <LockIcon sx={{ fontSize: 50, color: "primary.main", mb: 1 }} />
+            <Typography variant="h5" fontWeight={600} gutterBottom>
+              Premium Feature
+            </Typography>
+            <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+              Searching and following WanderMemo users is available only for
+              premium members. Upgrade your account to unlock this feature and
+              connect with fellow travelers.
+            </Typography>
+            <Button variant="contained" component={Link} to="/account" size="large" sx={{ borderRadius: 3 }}>
+              Upgrade to Premium
+            </Button>
+          </CardContent>
+        </Card>
+      </Box>
+    )
   }
 
   return (

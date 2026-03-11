@@ -1,7 +1,8 @@
 import { Timeline, TimelineConnector, TimelineContent, TimelineDot, TimelineItem, TimelineOppositeContent, TimelineSeparator } from '@mui/lab'
 import { Box, Card, CardContent, Chip, ImageList, ImageListItem, Typography } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import MemoryDetailsModal from './MemoryDetailsModalComponent'
+import { MODAL_VIEW_MODES as modes } from './Constants'
 
 function TripTimeline({ memories, reloadData }) {
     const [open, setOpen] = useState(false)
@@ -91,7 +92,7 @@ function TripTimeline({ memories, reloadData }) {
             </Timeline>
             <MemoryDetailsModal 
                 isNew={false} open={open} onClose={() => setOpen(false)} memory={selectedMemory}  
-                reloadData={reloadData} disableRestoreFocus mode={"edit"}
+                reloadData={reloadData} disableRestoreFocus mode={modes.EDIT}
             />
         </>
 

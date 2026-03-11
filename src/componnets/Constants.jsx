@@ -20,3 +20,14 @@ export const VISIBILITIES = [
 export const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/;
 
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+export const USER_ROLES = {
+    PREMIUM: { value: "premium", displayLabel: "Premium" },
+    USER: { value: "user", displayLabel: "User" },
+    ADMIN: { value: "admin", displayLabel: "Admin" }
+}
+
+export const MODAL_VIEW_MODES = {
+    EDIT: "edit",
+    CREATE: "create"
+}

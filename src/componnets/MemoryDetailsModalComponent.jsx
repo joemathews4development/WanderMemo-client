@@ -1,9 +1,7 @@
 import {
   Dialog, Box, Typography, IconButton, TextField, Button, Grid,
   CircularProgress, MenuItem, DialogTitle, DialogContent, DialogActions,
-  FormControl,
-  InputLabel,
-  Select
+  FormControl, InputLabel, Select
 } from "@mui/material"
 import DeleteIcon from "@mui/icons-material/Delete"
 import UploadIcon from "@mui/icons-material/Upload";
@@ -12,6 +10,7 @@ import { MEMORY_TYPES as memoryTypes, VISIBILITIES as visibilities } from "./Con
 import service from "../services/config.services"
 import { ToastContext } from "../context/toast.context"
 import CitySelector from "./CitySelector"
+import { MODAL_VIEW_MODES as modes } from "./Constants";
 
 function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
 
@@ -30,7 +29,7 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
   const [isUploading, setIsUploading] = useState(false)
 
   useEffect(() => {
-    if (mode === "edit" && memory) {
+    if (mode === modes.EDIT && memory) {
       setForm({
         title: memory.title || "",
         caption: memory.caption || "",
@@ -53,7 +52,7 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
 
   const handleSubmit = async () => {
     console.log(form)
-    mode === "create" ? createMemory() : saveMemory()
+    mode === modes.CREATE ? createMemory() : saveMemory()
   }
 
   const saveMemory = async () => {
@@ -111,7 +110,7 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl" disableRestoreFocus>
-      <DialogTitle>{mode === "create" ? "Create Memory" : "Edit Memory"}</DialogTitle>
+      <DialogTitle>{mode === modes.CREATE ? "Create Memory" : "Edit Memory"}</DialogTitle>
       <DialogContent>
         <Typography variant="h6" mb={2}> Images </Typography>
         <Box sx={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))", gap: 2 }}>
