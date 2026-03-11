@@ -12,3 +12,18 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.animated-route {
+  stroke-dasharray: 10;
+  animation: dashmove 2s linear infinite;
+}
+
+@keyframes dashmove {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.leaflet-routing-container {
+  display: none;
+}

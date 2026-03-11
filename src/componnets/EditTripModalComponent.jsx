@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Grid } from "@mui/material";
 
-function EditTripModal({ open, onClose, trip, onSave }) {
+function EditTripModal({ open, onClose, trip, onSave, mode }) {
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -11,7 +11,7 @@ function EditTripModal({ open, onClose, trip, onSave }) {
   });
 
   useEffect(() => {
-    if (trip) {
+    if (mode === "edit" && trip) {
       setForm({
         title: trip.title || "",
         description: trip.description || "",
@@ -20,7 +20,7 @@ function EditTripModal({ open, onClose, trip, onSave }) {
         endDate: trip.endDate?.slice(0,10) || ""
       });
     }
-  }, [trip]);
+  }, [trip, mode]);
 
   const handleChange = (e) => {
     setForm({
@@ -35,23 +35,37 @@ function EditTripModal({ open, onClose, trip, onSave }) {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="xl">
-      <DialogTitle>Edit Trip</DialogTitle>
+      <DialogTitle>{mode === "create" ? "Create Trip" : "Edit Trip"}</DialogTitle>
       <DialogContent>
         <Grid container spacing={2} mt={1}>
           <Grid size={{xs: 12}}>
             <TextField label="Title" name="title" value={form.title} onChange={handleChange} fullWidth/>
           </Grid>
           <Grid size={{xs: 12}}>
-            <TextField label="Description" name="description" value={form.description}
-              onChange={handleChange} multiline rows={3} fullWidth/>
+            <TextField 
+              label="Description" name="description" value={form.description}
+              onChange={handleChange} multiline rows={3} fullWidth
+            />
+          </Grid>
+          {mode === "edit" && trip && (
+            <Grid size={{xs: 12}}>
+              <TextField 
+                label="Cities" name="cities" value={trip.cities.map(city => city.city).join(", ")}
+                disabled={true} onChange={handleChange} fullWidth
+              />
+            </Grid>
+          )}
+          <Grid size={{xs: 4}}>
+            <TextField 
+              label="Start Date" name="startDate" type="date" value={form.startDate}
+              onChange={handleChange} fullWidth slotProps={{ inputLabel: { shrink: true } }} 
+            />
           </Grid>
           <Grid size={{xs: 4}}>
-            <TextField label="Start Date" name="startDate" type="date" value={form.startDate}
-              onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
-          </Grid>
-          <Grid size={{xs: 4}}>
-            <TextField label="End Date" name="endDate" type="date" value={form.endDate}
-              onChange={handleChange} fullWidth InputLabelProps={{ shrink: true }} />
+            <TextField 
+              label="End Date" name="endDate" type="date" value={form.endDate}
+              onChange={handleChange} fullWidth slotProps={{ inputLabel: { shrink: true } }}
+            />
           </Grid>
           <Grid size={{xs: 4}}>
             <TextField label="Cost" name="cost" value={form.cost} onChange={handleChange} fullWidth/>
@@ -61,7 +75,7 @@ function EditTripModal({ open, onClose, trip, onSave }) {
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
         <Button variant="contained" onClick={handleSubmit}>
-          Save
+          {mode === "create" ? "Create Trip" : "Save Changes"}
         </Button>
       </DialogActions>
     </Dialog>
