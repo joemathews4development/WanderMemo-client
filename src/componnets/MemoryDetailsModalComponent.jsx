@@ -40,15 +40,15 @@ function MemoryDetailsModal({ isNew, open, onClose, memory, onSave, trip }) {
   const { showToast } = useContext(ToastContext)
 
   useEffect(() => {
-      if (memory?.city) {
-        getCity()
-      }
+    if (memory?.city) {
+      getCity()
+    }
   }, [])
 
   const getCity = async () => {
     try {
-        const city = await service.get(`/cities/${memory.city._id}`)
-        setForm({
+      const city = await service.get(`/cities/${memory.city._id}`)
+      setForm({
         ...form,
         city: city
       })
@@ -106,31 +106,31 @@ function MemoryDetailsModal({ isNew, open, onClose, memory, onSave, trip }) {
   }
 
   const saveMemory = async () => {
-      try {
-        form.city = form.city._id
-        await service.put(`/memories/${memory._id}`, form)
-        setIsEditing(false)
-        onSave()
-        showToast("Updated memory successfully", "success")
-      } catch (error) {
-        console.log(error)
-        showToast(error.response.data.errorMessage, "error")
-      }
+    try {
+      form.city = form.city._id
+      await service.put(`/memories/${memory._id}`, form)
+      setIsEditing(false)
+      onSave()
+      showToast("Updated memory successfully", "success")
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    }
   }
 
   const createMemory = async () => {
-      try {
-        form.trip = trip._id
-        form.city = form.city._id
-        console.log(form)
-        await service.post(`/memories`, form)
-        onClose()
-        onSave()
-        showToast("Created new memory successfully", "success")
-      } catch (error) {
-        console.log(error)
-        showToast(error.response.data.errorMessage, "error")
-      }
+    try {
+      form.trip = trip._id
+      form.city = form.city._id
+      console.log(form)
+      await service.post(`/memories`, form)
+      onClose()
+      onSave()
+      showToast("Created new memory successfully", "success")
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    }
   }
 
   return (
@@ -151,20 +151,20 @@ function MemoryDetailsModal({ isNew, open, onClose, memory, onSave, trip }) {
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
-  <CitySelector
-    value={form.city?.city}
-    disabled={!isEditing}
-    onChange={(city) => {
-      console.log("over here", city)
-setForm({
-        ...form,
-        city: city
-      })
-    }
-      
-    }
-  />
-</Grid>
+            <CitySelector
+              value={form.city?.city}
+              disabled={!isEditing}
+              onChange={(city) => {
+                console.log("over here", city)
+                setForm({
+                  ...form,
+                  city: city
+                })
+              }
+
+              }
+            />
+          </Grid>
           <Grid size={{ xs: 3 }}>
             <TextField
               label="Date" name="date" type="date" value={form.date} onChange={handleChange}
@@ -177,8 +177,8 @@ setForm({
             />
           </Grid>
           <Grid size={{ xs: 3 }}>
-            <TextField 
-              id="memory-type" select value={form.type} name="type" label="Type" 
+            <TextField
+              id="memory-type" select value={form.type} name="type" label="Type"
               onChange={handleChange} fullWidth disabled={!isEditing}
             >
               {memoryTypes.map(mType => (<MenuItem key={mType} value={mType}>{mType}</MenuItem>))}
@@ -186,8 +186,8 @@ setForm({
           </Grid>
           <Grid size={{ xs: 3 }}>
             <TextField
-              id="visibility-type" select value={form.visibility} name="visibility" 
-              label="Visibility" onChange={handleChange} fullWidth disabled={!isEditing} 
+              id="visibility-type" select value={form.visibility} name="visibility"
+              label="Visibility" onChange={handleChange} fullWidth disabled={!isEditing}
             >
               {visibilities.map(visibility => (<MenuItem key={visibility} value={visibility}>{visibility}</MenuItem>))}
             </TextField>

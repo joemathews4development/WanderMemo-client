@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import service from '../services/config.services'
 import { ToastContext } from '../context/toast.context'
+import { passwordRegex, emailRegex } from '../componnets/Constants'
 
 function SignupPage() {
 
@@ -14,6 +15,9 @@ function SignupPage() {
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
 
+    const [errors, setErrors] = useState({})
+    const [loading, setLoading] = useState(false)
+
     const { showToast } = useContext(ToastContext)
 
     const handleEmailChange = (e) => setEmail(e.target.value);
@@ -23,9 +27,33 @@ function SignupPage() {
 
     const textfieldStyle = { width: "60%", minWidth: 250, alignSelf: "center" }
 
+    const validate = () => {
+        const newErrors = {}
+        if (!firstName) {
+            newErrors.firstName = "First name is required"
+        }
+        if (!lastName) {
+            newErrors.lastName = "Last name is required"
+        }
+        if (!email) {
+            newErrors.email = "Email is required"
+        } else if (!emailRegex.test(email)) {
+            newErrors.email = "Invalid email format"
+        }
+        if (!password) {
+            newErrors.password = "Password is required"
+        } else if (!passwordRegex.test(password)) {
+            newErrors.password = "Password must be at least 8 characters with uppercase, lowercase and number"
+        }
+        setErrors(newErrors)
+        return Object.keys(newErrors).length === 0
+    }
+
     const handleSignup = async () => {
+        if(!validate()) return
         const body = { firstName, lastName, email, password }
         try {
+            setLoading(true)
             const response = await service.post(`auth/signup`, body)
             console.log(response)
             navigate("/login")
@@ -37,6 +65,8 @@ function SignupPage() {
             } else {
                 console.log(error)
             }
+        } finally {
+            setLoading(false)
         }
     }
 
@@ -59,11 +89,23 @@ function SignupPage() {
                         Create your Account
                     </Typography>
                     <Stack spacing={2}>
-                        <TextField label="First Name" slotProps={{ input: { autoCapitalize: "words" } }} value={firstName} onChange={handleFirstNameChange} sx={textfieldStyle} variant='outlined' />
-                        <TextField label="Last Name" slotProps={{ input: { autoCapitalize: "words" } }} value={lastName} onChange={handleLastNameChange} sx={textfieldStyle} variant='outlined' />
-                        <TextField label="Email" type='email' value={email} onChange={handleEmailChange} sx={textfieldStyle} variant='outlined' />
-                        <TextField label="Password" type='password' value={password} onChange={handlePasswordChange} sx={textfieldStyle} variant='outlined' />
-                        <Button variant='contained' size='large' onClick={handleSignup} sx={{
+                        <TextField 
+                            label="First Name" slotProps={{ input: { autoCapitalize: "words" } }} error={Boolean(errors.firstName)}
+                            helperText={errors.firstName} value={firstName} onChange={handleFirstNameChange} sx={textfieldStyle} variant='outlined' 
+                        />
+                        <TextField 
+                            label="Last Name" slotProps={{ input: { autoCapitalize: "words" } }} error={Boolean(errors.lastName)}
+                            helperText={errors.lastName} value={lastName} onChange={handleLastNameChange} sx={textfieldStyle} variant='outlined' 
+                        />
+                        <TextField 
+                            label="Email" type='email' value={email} error={Boolean(errors.email)}
+                            helperText={errors.email} onChange={handleEmailChange} sx={textfieldStyle} variant='outlined' 
+                        />
+                        <TextField
+                            label="Password" type='password' value={password} error={Boolean(errors.password)}
+                            helperText={errors.password} onChange={handlePasswordChange} sx={textfieldStyle} variant='outlined' 
+                        />
+                        <Button variant='contained' size='large' disabled={loading} onClick={handleSignup} sx={{
                             ...textfieldStyle, mt: 1, py: 2, borderRadius: 3, fontWeight: 600
                         }}>
                             Create Account

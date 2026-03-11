@@ -1,13 +1,21 @@
 import { Box, Card, CardContent, Typography, TextField, Button, Avatar, Stack } from "@mui/material"
 import { useContext, useState } from "react"
-import axios from "axios"
 import { AuthContext } from "../context/auth.context"
 import { useNavigate } from "react-router-dom"
+import { ToastContext } from "../context/toast.context"
+import service from "../services/config.services"
+import { passwordRegex, emailRegex } from "../componnets/Constants"
 
 function AccountsPage() {
   const { loggedInUser, setLoggedInUser, setIsLoggedIn } = useContext(AuthContext)
+  const { showToast } = useContext(ToastContext)
   const navigate = useNavigate()
   console.log("over here", loggedInUser)
+
+  const [errors, setErrors] = useState({})
+  const [passwordLoading, setPasswordLoading] = useState(false)
+  const [emailLoading, setEmailLoading] = useState(false)
+
   const [profile, setProfile] = useState({
     firstName: loggedInUser.firstName,
     lastName: loggedInUser.lastName,
@@ -27,18 +35,73 @@ function AccountsPage() {
   }
 
   const saveProfile = async () => {
-    const res = await axios.patch("/api/users/profile", profile)
-    setLoggedInUser(res.data)
+    try {
+      const res = await service.patch("/users/profile", profile)
+      setLoggedInUser(res.data)
+      showToast("Profile update successful!", "success")
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    }
+  }
+
+  const validateEmail = async () => {
+    if(!email) {
+      setErrors = { email: "Email is mandatory" }
+      return false
+    }
+    if(!emailRegex.test(email)) {
+      setErrors = { email: "Invalid email format" }
+      return false
+    }
+    setErrors("")
+    return true
   }
 
   const updateEmail = async () => {
-    await axios.patch("/api/users/email", { email })
-    alert("Email updated")
+    if(!validateEmail) return
+    try {
+      setEmailLoading(true)
+      await service.patch("/auth/changeEmail", { newEmail: email })
+      showToast("Updated Email successfully!", "success")
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    } finally {
+      setEmailLoading(false)
+    }
+  }
+
+  const validatePassword = () => {
+    const newErrors = {}
+    if(!password.currentPassword) {
+      newErrors.currentPassword = "Current password is required"
+    }
+    if (!password.newPassword) {
+      newErrors.newPassword = "New password is required"
+    } else if (!passwordRegex.test(password.newPassword)) {
+      newErrors.newPassword = "Password must be at least 8 characters with uppercase, lowercase and number"
+    }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
   }
 
   const updatePassword = async () => {
-    await axios.patch("/api/users/password", password)
-    alert("Password updated")
+    if(!validatePassword()) return
+    try {
+      setPasswordLoading(true)
+      await service.patch(
+        "/auth/changePassword", 
+        { oldPassword: password.currentPassword, newPassword: password.newPassword }
+      )
+      setPassword({ currentPassword: "", newPassword: "" })
+      showToast("Updated Password successfully!", "success")
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    } finally {
+      setPasswordLoading(false)
+    }
   }
 
   const handleLogout = () => {
@@ -77,10 +140,10 @@ function AccountsPage() {
           <Typography variant="h6" mb={2}>Update Email</Typography>
           <Stack spacing={2}>
             <TextField
-              label="New Email" value={email} fullWidth
-              onChange={(e) => setEmail(e.target.value)}
+              label="New Email" value={email} fullWidth error={Boolean(errors.email)}
+              helperText={errors.email} onChange={(e) => setEmail(e.target.value)}
             />
-            <Button variant="contained" onClick={updateEmail}>
+            <Button variant="contained" onClick={updateEmail} disabled={emailLoading} >
               Update Email
             </Button>
           </Stack>
@@ -92,8 +155,8 @@ function AccountsPage() {
           <Typography variant="h6" mb={2}>Change Password</Typography>
           <Stack spacing={2}>
             <TextField
-              label="Current Password" type="password" fullWidth
-              value={password.currentPassword} onChange={(e) =>
+              label="Current Password" type="password" fullWidth error={Boolean(errors.currentPassword)}
+              helperText={errors.currentPassword} value={password.currentPassword} onChange={(e) =>
                 setPassword({
                   ...password,
                   currentPassword: e.target.value
@@ -101,15 +164,15 @@ function AccountsPage() {
               }
             />
             <TextField
-              label="New Password" type="password" value={password.newPassword}
-              fullWidth onChange={(e) =>
+              label="New Password" type="password" value={password.newPassword} error={Boolean(errors.newPassword)}
+              helperText={errors.newPassword} fullWidth onChange={(e) =>
                 setPassword({
                   ...password,
                   newPassword: e.target.value
                 })
               }
             />
-            <Button variant="contained" onClick={updatePassword}>
+            <Button variant="contained" onClick={updatePassword} disabled={passwordLoading}>
               Change Password
             </Button>
           </Stack>
