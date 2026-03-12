@@ -26,7 +26,7 @@ function TripTimeline({ memories, reloadData }) {
                             setSelectedMemory(memory)
                             setOpen(true)
                             }}>
-                            <TimelineOppositeContent color='text.secondary'>{memory.date}</TimelineOppositeContent>
+                            <TimelineOppositeContent color='text.secondary'>{new Date(memory.date).toLocaleString()}</TimelineOppositeContent>
                             <TimelineSeparator>
                                 <TimelineDot color='primary' />
                                 <TimelineConnector />

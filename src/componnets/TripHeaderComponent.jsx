@@ -28,7 +28,7 @@ function TripHeaderComponent({ trip, loadData }) {
     return (
         <Box sx={{ p: 4, borderRadius: 4, background: "linear-gradient(135deg,#667eea 0%,#764ba2 100%)", color: "white" }}>
             <Typography variant="h4" fontWeight={700}>{trip.title}</Typography>
-            <Typography sx={{ mt: 1 }}>{trip.startDate} → {trip.endDate}</Typography>
+            <Typography sx={{ mt: 1 }}>{new Date(trip.startDate).toLocaleString()} → {new Date(trip.endDate).toLocaleString()}</Typography>
             <Typography sx={{ mt: 1 }}>Cities: {trip.cities.map(city => city.city).join(", ")}</Typography>
             <Stack direction="row" spacing={2} mt={3}>
                 <Button variant="contained" sx={{ backgroundColor: "white", color: "#764ba2" }} onClick={() => setOpenEditModal(true)}>
