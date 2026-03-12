@@ -16,7 +16,7 @@ function Navbar({ handleToggleTheme }) {
 
   return (
     <>
-      <AppBar position="static">
+      <AppBar position="fixed">
         <Toolbar>
           {/* Mobile Menu Button */}
           <IconButton color="inherit" edge="start" sx={{ display: { lg: "none" }, mr: 2 }} onClick={toggleDrawer}>
@@ -58,6 +58,9 @@ function Navbar({ handleToggleTheme }) {
                         <Typography component={Link} to="/feeds" sx={{ textDecoration: "none", color: "inherit" }}>
                             Feeds
                         </Typography>
+                        <Typography component={Link} to="/ai-trip-planner" sx={{ textDecoration: "none", color: "inherit" }}>
+                            AI Trip Planner
+                        </Typography>
                         <Typography component={Link} to="/users" sx={{ textDecoration: "none", color: "inherit" }}>
                             Users
                         </Typography>
@@ -73,7 +76,6 @@ function Navbar({ handleToggleTheme }) {
             <Typography component={Link} to="/about" sx={{ textDecoration: "none", color: "inherit" }}>
               About
             </Typography>
-            <Switch onChange={handleToggleTheme} />
           </Box>
         </Toolbar>
       </AppBar>
@@ -91,6 +93,9 @@ function Navbar({ handleToggleTheme }) {
                     <ListItem button component={Link} to="/feeds" onClick={toggleDrawer}>
                         <ListItemText primary="Feeds" />
                     </ListItem>
+                    <ListItem button component={Link} to="/ai-trip-planner" onClick={toggleDrawer}>
+                        <ListItemText primary="AI Trip Planner" />
+                    </ListItem>
                     <ListItem button component={Link} to="/users" onClick={toggleDrawer}>
                         <ListItemText primary="Users" />
                     </ListItem>
@@ -105,9 +110,6 @@ function Navbar({ handleToggleTheme }) {
             }
             <ListItem button component={Link} to="/about" onClick={toggleDrawer}>
               <ListItemText primary="About" />
-            </ListItem>
-            <ListItem>
-              <Switch onChange={handleToggleTheme} />
             </ListItem>
           </List>
         </Box>

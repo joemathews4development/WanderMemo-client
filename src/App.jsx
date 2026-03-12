@@ -12,6 +12,9 @@ import SignupPage from './pages/SignupPage';
 import LoginPage from './pages/LoginPage';
 import LoggedIn from './componnets/LoggedIn';
 import TripDetailsPage from './pages/TripDetailsPage';
+import AITripPlannerPage from './pages/AITripPlannerPage';
+import PremiumUser from './componnets/PremiumUser';
+import Footer from './componnets/Footer';
 
 function App() {
 
@@ -20,27 +23,24 @@ function App() {
   return (
     <>
     <CssBaseline />
-    <Box
-      sx={{
-        minHeight: "100vh",
-        display: "flex",
-        flexDirection: "column"
-      }}
+    <Box sx={{ minHeight: "100vh", display: "flex", flexDirection: "column" }}
     >
       <Navbar handleToggleTheme={handleToggleTheme}/>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, mt: "64px"}}>
         <Routes>
           <Route path='/' element={<LoggedIn><HomePage/></LoggedIn>}/>
           <Route path='/feeds' element={<LoggedIn><FeedsPage/></LoggedIn>}/>
-          <Route path='/users' element={<LoggedIn><UsersPage/></LoggedIn>}/>
+          <Route path='/users' element={<LoggedIn><PremiumUser><UsersPage/></PremiumUser></LoggedIn>}/>
           <Route path='/account' element={<LoggedIn><AccountsPage/></LoggedIn>}/>
           <Route path='/about' element={<AboutPage/>}/>
           <Route path='/signup' element={<SignupPage/>}/>
           <Route path='/login' element={<LoginPage/>}/>
+          <Route path='/ai-trip-planner' element={<LoggedIn><PremiumUser><AITripPlannerPage/></PremiumUser></LoggedIn>}/>
 
           <Route path='/trips/:tripId' element={<LoggedIn><TripDetailsPage/></LoggedIn>}/>
         </Routes>
       </Box>
+      <Footer/>
     </Box>
     </>
   )
