@@ -16,7 +16,7 @@ function FollowRequests({ requests, updateRequest }) {
                     return (
                         <Box key={request._id} sx={{display: "flex", alignItems: "center", justifyContent: "space-between"}}>
                         <Box sx={{display: "flex", alignItems: "center", gap: 2}}>
-                            <Avatar /*src={request.follower.profileImage}*//>
+                            <Avatar src={request.follower.profileImage}/>
                             <Typography>{request.follower.firstName} {request.follower.lastName}</Typography>
                         </Box>
                         <Box sx={{display: "flex", gap: 1}} >

@@ -21,7 +21,8 @@ function AboutPage() {
     { tech: "Axios", image: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/axios/axios-plain.svg" },
     { tech: "Cloudinary", image: "https://cdn.worldvectorlogo.com/logos/cloudinary-2.svg" },
     { tech: "ChatGPT (OpenAI)", image: "https://cdn.worldvectorlogo.com/logos/openai-2.svg" },
-    { tech: "React Leaflet", image: "https://react-leaflet.js.org/img/logo.svg" }
+    { tech: "React Leaflet", image: "https://react-leaflet.js.org/img/logo.svg" },
+    { tech: "Stripe", image: "https://cdn.worldvectorlogo.com/logos/stripe-4.svg" }
   ]
 
   const featureComponent = (icon, title, description) => {

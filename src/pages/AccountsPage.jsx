@@ -11,8 +11,9 @@ import { AuthContext } from "../context/auth.context"
 import { useNavigate } from "react-router-dom"
 import { ToastContext } from "../context/toast.context"
 import service from "../services/config.services"
-import { passwordRegex, emailRegex } from "../componnets/Constants"
+import { passwordRegex, emailRegex, USER_ROLES } from "../componnets/Constants"
 import { USER_ROLES as roles } from "../componnets/Constants"
+import PaymentIntent from "../componnets/PaymentIntent";
 
 function AccountsPage() {
   const { loggedInUser, setLoggedInUser, setIsLoggedIn } = useContext(AuthContext)
@@ -35,6 +36,8 @@ function AccountsPage() {
     currentPassword: "",
     newPassword: ""
   })
+
+  const [showPaymentIntent, setShowPaymentIntent] = useState(false)
 
   const handleProfileChange = (e) => {
     setProfile({
@@ -163,8 +166,8 @@ function AccountsPage() {
         <CardContent>
           <Typography variant="h6" mb={2}>Profile</Typography>
           <Stack spacing={2} alignItems="center">
-            <Avatar src={profile.profileImage} sx={{ width: 80, height: 80 }}/>
-            <Button variant="outlined" component="label" startIcon={<UploadIcon/>} disabled={isUploading}>
+            <Avatar src={profile.profileImage} sx={{ width: 80, height: 80 }} />
+            <Button variant="outlined" component="label" startIcon={<UploadIcon />} disabled={isUploading}>
               Change Image
               <input type="file" hidden name="image" onChange={handleFileUpload} />
             </Button>
@@ -228,15 +231,19 @@ function AccountsPage() {
         </CardContent>
       </Card>
       {/* ROLE */}
-      <FormControl fullWidth disabled sx={{my:2}}>
-        <InputLabel id="role-label">Role</InputLabel>
-        <Select labelId="role-label" label="Role" value={loggedInUser.role}>
-          {Object.values(roles).map((role) => <MenuItem key={role.value} value={role.value}>{role.displayLabel}</MenuItem>)}
-        </Select>
-        <FormHelperText>
-          Contact the administrator to change your role.
-        </FormHelperText>
-      </FormControl>
+      {
+        showPaymentIntent === false ?
+          <FormControl fullWidth disabled sx={{ my: 2 }}>
+            <InputLabel id="role-label">Role</InputLabel>
+            <Select labelId="role-label" label="Role" value={loggedInUser.role}>
+              {Object.values(roles).map((role) => <MenuItem key={role.value} value={role.value}>{role.displayLabel}</MenuItem>)}
+            </Select>
+            {loggedInUser.role === roles.USER.value && <Button onClick={() => setShowPaymentIntent(true)}>Purchase Premium</Button>}
+          </FormControl>
+          :
+          <PaymentIntent productDetails={loggedInUser.role} />
+      }
+
       {/* LOGOUT */}
       <Button variant="outlined" color="error" fullWidth onClick={handleOpen}>
         Logout

@@ -15,6 +15,7 @@ import TripDetailsPage from './pages/TripDetailsPage';
 import AITripPlannerPage from './pages/AITripPlannerPage';
 import PremiumUser from './componnets/PremiumUser';
 import Footer from './componnets/Footer';
+import PaymentSuccess from './componnets/PaymentSuccess';
 
 function App() {
 
@@ -38,6 +39,7 @@ function App() {
           <Route path='/ai-trip-planner' element={<LoggedIn><PremiumUser><AITripPlannerPage/></PremiumUser></LoggedIn>}/>
 
           <Route path='/trips/:tripId' element={<LoggedIn><TripDetailsPage/></LoggedIn>}/>
+          <Route path="/payment-success" element={ <PaymentSuccess/> }/>
         </Routes>
       </Box>
       <Footer/>
