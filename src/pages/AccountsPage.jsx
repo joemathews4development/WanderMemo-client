@@ -3,7 +3,8 @@ import {
   FormControl, InputLabel, Select, MenuItem, FormHelperText, Dialog,
   DialogTitle, DialogContent, DialogContentText, DialogActions, IconButton
 } from "@mui/material"
-import LogoutIcon from "@mui/icons-material/Logout";
+import LogoutIcon from "@mui/icons-material/Logout"
+import UploadIcon from "@mui/icons-material/Upload"
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
 import { useContext, useState } from "react"
 import { AuthContext } from "../context/auth.context"
@@ -52,7 +53,9 @@ function AccountsPage() {
 
   const saveProfile = async () => {
     try {
+      console.log(profile)
       const res = await service.patch("/users/profile", profile)
+      console.log(res.data)
       setLoggedInUser(res.data)
       showToast("Profile update successful!", "success")
     } catch (error) {
@@ -127,6 +130,32 @@ function AccountsPage() {
     navigate(`/login`)
   }
 
+  const [isUploading, setIsUploading] = useState(false)
+
+  const handleFileUpload = async (event) => {
+    // console.log("The file to be uploaded is: ", e.target.files[0]);
+
+    if (!event.target.files[0]) {
+      // to prevent accidentally clicking the choose file button and not selecting a file
+      return;
+    }
+    setIsUploading(true); // to start the loading animation
+    const uploadData = new FormData();
+    uploadData.append("image", event.target.files[0]);
+    try {
+      const response = await service.post("/upload/", uploadData)
+      setProfile(prev => ({
+        ...prev,
+        profileImage: response.data.imageUrl
+      }))
+    } catch (error) {
+      console.log(error)
+      showToast(error.response.data.errorMessage, "error")
+    } finally {
+      setIsUploading(false)
+    }
+  }
+
   return (
     <Box sx={{ maxWidth: 600, mx: "auto", p: 3 }}>
       {/* PROFILE */}
@@ -134,7 +163,11 @@ function AccountsPage() {
         <CardContent>
           <Typography variant="h6" mb={2}>Profile</Typography>
           <Stack spacing={2} alignItems="center">
-            <Avatar src={profile.profileImage} sx={{ width: 80, height: 80 }} />
+            <Avatar src={profile.profileImage} sx={{ width: 80, height: 80 }}/>
+            <Button variant="outlined" component="label" startIcon={<UploadIcon/>} disabled={isUploading}>
+              Change Image
+              <input type="file" hidden name="image" onChange={handleFileUpload} />
+            </Button>
             <TextField
               label="First Name" name="firstName" value={profile.firstName}
               onChange={handleProfileChange} fullWidth
