@@ -35,7 +35,6 @@ function UsersPage() {
     try {
       setLoading(true)
       const res = await service.get(`/users?search=${debouncedSearch}`)
-      console.log("overhere", res)
       setUsers(res.data)
     } catch (err) {
       console.error(err)

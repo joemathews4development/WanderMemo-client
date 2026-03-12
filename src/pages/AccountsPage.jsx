@@ -17,7 +17,6 @@ function AccountsPage() {
   const { loggedInUser, setLoggedInUser, setIsLoggedIn } = useContext(AuthContext)
   const { showToast } = useContext(ToastContext)
   const navigate = useNavigate()
-  console.log("over here", loggedInUser)
 
   const [errors, setErrors] = useState({})
   const [passwordLoading, setPasswordLoading] = useState(false)

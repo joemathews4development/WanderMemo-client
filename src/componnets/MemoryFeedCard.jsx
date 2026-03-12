@@ -26,7 +26,6 @@ function MemoryFeedCard(props) {
     const loadMemory = async () => {
         try {
             const response = await service.get(`/memories/${memory._id}`)
-            console.log(response.data)
             setMemory(response.data)
         } catch (error) {
             console.log(error)

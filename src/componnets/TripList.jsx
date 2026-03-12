@@ -3,7 +3,6 @@ import React from 'react'
 import TripCard from './TripCard'
 
 function TripList({ trips }) {
-    console.log("Trips are here", trips)
     if (!trips?.length) return null
     return (
         <Grid container spacing={3}>

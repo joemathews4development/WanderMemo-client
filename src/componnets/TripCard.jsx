@@ -2,7 +2,6 @@ import { Card, CardContent, CardMedia, Typography } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 
 function TripCard({ trip }) {
-    console.log("over here", trip)
     const navigate = useNavigate()
     return (
         <Card

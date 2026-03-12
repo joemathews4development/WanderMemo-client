@@ -14,7 +14,6 @@ function TripHeaderComponent({ trip, loadData }) {
     const { showToast } = useContext(ToastContext)
 
     const handleSave = async (updatedTrip) => {
-        console.log(updatedTrip)
         // Example API call
         try {
             await service.put(`/trips/${trip._id}`, updatedTrip)

@@ -98,8 +98,6 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
         ...prev,
         medias: [...prev.medias, response.data.imageUrl]
       }))
-      console.log(memory.medias)
-      console.log(form.medias)
     } catch (error) {
       console.log(error)
       showToast(error.response.data.errorMessage, "error")

@@ -12,7 +12,7 @@ import { MODAL_VIEW_MODES as modes } from '../componnets/Constants'
 function HomePage() {
 
     const [trips, setTrips] = useState(null)
-    const [followRequests, setFollowRequests] = useState(null)
+    const [followRequests, setFollowRequests] = useState([])
 
     const [openEditModal, setOpenEditModal] = useState(false)
 
@@ -28,13 +28,12 @@ function HomePage() {
         try {
             const [tripsResponse, followRequestsResponse] = await Promise.all([
                 service.get(`/trips/${loggedInUser._id}/user`),
-                // service.get(`/follows?status=Pending`)
+                service.get(`/follows?status=Pending`)
             ])
-            console.log(tripsResponse.data)
             const tripsData = tripsResponse.data
-            // const followRequestsData = followRequestsResponse.data
+            const followRequestsData = followRequestsResponse.data
             setTrips(tripsData)
-            // setTrips(followRequestsData)
+            setFollowRequests(followRequestsData)
         } catch (error) {
             console.log(error)
         }
@@ -50,6 +49,16 @@ function HomePage() {
         }
     }
 
+    const loadFollowRequests = async () => {
+        try {
+            const followRequestsResponse = await service.get(`/follows?status=Pending`)
+            const followRequestsData = followRequestsResponse.data
+            setFollowRequests(followRequestsData)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const createNewTrip = async (newTrip) => {
         try {
             await service.post(`/trips`, newTrip)
@@ -60,6 +69,17 @@ function HomePage() {
             showToast(error.response.data.errorMessage, "error")
         } finally {
             setOpenEditModal(false)
+        }
+    }
+
+    const updateFollowRequest = async (updatedStatus, requestId) => {
+        try {
+            await service.patch(`/follows/${requestId}`, {status: updatedStatus})
+            showToast("Updated follow request successfully", "success")
+            loadFollowRequests()
+        } catch (error) {
+            console.log(error)
+            showToast(error.response.data.errorMessage, "error")
         }
     }
 
@@ -79,7 +99,7 @@ function HomePage() {
                         <EditTripModal open={openEditModal} onClose={() => setOpenEditModal(false)} onSave={createNewTrip} mode={modes.CREATE}/>
                     </Box>
                 </Grid>
-                <Grid size={{ xs: 12, md: 6 }}><FollowRequests requests={followRequests} /></Grid>
+                <Grid size={{ xs: 12, md: 6 }}><FollowRequests requests={followRequests} updateRequest={updateFollowRequest}/></Grid>
                 <Grid size={{ xs: 12 }}>
                     <Paper sx={{ p: 2, borderRadius: 3 }}>
                         <TravelMap trips={trips} screenMode={"Trips"}/>
