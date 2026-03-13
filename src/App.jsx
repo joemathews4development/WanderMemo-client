@@ -16,6 +16,7 @@ import AITripPlannerPage from './pages/AITripPlannerPage';
 import PremiumUser from './componnets/PremiumUser';
 import Footer from './componnets/Footer';
 import PaymentSuccess from './componnets/PaymentSuccess';
+import ErrorPage from './pages/ErrorPage';
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
 
           <Route path='/trips/:tripId' element={<LoggedIn><TripDetailsPage/></LoggedIn>}/>
           <Route path="/payment-success" element={ <PaymentSuccess/> }/>
+          <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </Box>
       <Footer/>
