@@ -1,4 +1,5 @@
-import { Alert, Box, Button, Card, CardContent, Snackbar, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Link, Stack, TextField, Typography } from '@mui/material'
+import { Link as RouterLink } from "react-router-dom"
 import Logo from "../assets/navbar_logo.png"
 import { useContext, useState } from 'react'
 import { AuthContext } from '../context/auth.context'
@@ -67,6 +68,12 @@ function LoginPage() {
                         }}>
                             Login
                         </Button>
+                        <Typography variant="h6" align="center" fontWeight={300} mb={3}>
+  New to WanderMemo? Create your account{" "}
+  <Link component={RouterLink} to="/signup" underline="hover" sx={{ fontWeight: 600 }}>
+    here
+  </Link>
+</Typography>
                     </Stack>
                 </CardContent>
             </Card>

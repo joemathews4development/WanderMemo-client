@@ -1,6 +1,6 @@
-import { Box, Button, Card, CardContent, Stack, TextField, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Stack, TextField, Typography, Link } from '@mui/material'
 import Logo from "../assets/navbar_logo.png"
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link as RouterLink } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import service from '../services/config.services'
 import { ToastContext } from '../context/toast.context'
@@ -110,6 +110,12 @@ function SignupPage() {
                         }}>
                             Create Account
                         </Button>
+                        <Typography variant="h6" align="center" fontWeight={300} mb={3}>
+  Alrerady a WanderMemo member? Login to your account{" "}
+  <Link component={RouterLink} to="/login" underline="hover" sx={{ fontWeight: 600 }}>
+    here
+  </Link>
+</Typography>
                     </Stack>
                 </CardContent>
             </Card>
