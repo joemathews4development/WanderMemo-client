@@ -11,6 +11,7 @@ import service from "../services/config.services"
 import { ToastContext } from "../context/toast.context"
 import CitySelector from "./CitySelector"
 import { MODAL_VIEW_MODES as modes } from "./Constants";
+import { getFormattedInputDate } from "./Constants"
 
 function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
 
@@ -51,7 +52,6 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
   }
 
   const handleSubmit = async () => {
-    console.log(form)
     mode === modes.CREATE ? createMemory() : saveMemory()
   }
 
@@ -166,7 +166,7 @@ function MemoryDetailsModal({ open, onClose, memory, reloadData, trip, mode }) {
           </Grid>
           <Grid size={{ xs: 3 }}>
             <TextField
-              label="Date" name="date" type="date" value={form.date} onChange={handleChange}
+              label="Date" name="date" type="datetime-local" value={getFormattedInputDate(form.date)} onChange={handleChange}
               fullWidth InputLabelProps={{ shrink: true }}
             />
           </Grid>

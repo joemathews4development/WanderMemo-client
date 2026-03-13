@@ -2,8 +2,9 @@ import { Card, CardHeader, Avatar, CardContent, Typography, CardMedia, Box, Icon
 import InsertEmoticonIcon from "@mui/icons-material/InsertEmoticon"
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline"
 import service from "../services/config.services"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import CommentsList from "./CommentsList"
+import { ToastContext } from "../context/toast.context"
 
 function MemoryFeedCard(props) {
     const reactions = ["👍", "❤️", "😂", "😮", "😢", "😡", "🔥"]
@@ -11,6 +12,8 @@ function MemoryFeedCard(props) {
 
     const [anchorEl, setAnchorEl] = useState(null)
     const [openComments, setOpenComments] = useState(false)
+
+    const {showToast} = useContext(ToastContext)
 
     const addReaction = async (memoryId, emoji) => {
         try {
@@ -20,6 +23,7 @@ function MemoryFeedCard(props) {
             loadMemory()
         } catch (error) {
             console.log(error)
+            showToast(`Failed to add the reaction: ${error}`, "error")
         }
     }
 
@@ -29,6 +33,7 @@ function MemoryFeedCard(props) {
             setMemory(response.data)
         } catch (error) {
             console.log(error)
+            showToast(`Failed to load memory details: ${error}`, "error")
         }
     }
 

@@ -1,8 +1,9 @@
 import { Box, CircularProgress, Typography } from "@mui/material"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useContext } from "react"
 import MemoryFeedCard from "../componnets/MemoryFeedCard"
 import service from "../services/config.services"
 import LoadingScreen from "../componnets/LoadinScreen"
+import { ToastContext } from "../context/toast.context"
 
 function FeedsPage() {
 
@@ -10,6 +11,8 @@ function FeedsPage() {
   const [page, setPage] = useState(0)
   const [loading, setLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
+
+  const { showToast } = useContext(ToastContext)
 
   const observer = useRef()
 
@@ -28,6 +31,7 @@ function FeedsPage() {
       setPage(prev => prev + 1)
     } catch (error) {
       console.log(error)
+      showToast(`Loading memory feeds failed: ${error}`, "error")
     } finally {
       setLoading(false)
     }
@@ -38,6 +42,7 @@ function FeedsPage() {
     loadMemories()
   }, [])
 
+  /// To reload when it reaches the last feed.
   const lastMemoryRef = (node) => {
     if (loading) return
     if (observer.current) observer.current.disconnect()

@@ -56,9 +56,7 @@ function AccountsPage() {
 
   const saveProfile = async () => {
     try {
-      console.log(profile)
       const res = await service.patch("/users/profile", profile)
-      console.log(res.data)
       setLoggedInUser(res.data)
       showToast("Profile update successful!", "success")
     } catch (error) {

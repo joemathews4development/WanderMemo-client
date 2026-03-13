@@ -25,7 +25,6 @@ function LoginPage() {
         const body = { email, password }
         try {
             const response = await service.post(`/auth/login`, body)
-            console.log(response)
             localStorage.setItem("authToken", response.data.authToken)
             setIsLoggedIn(true)
             setLoggedInUser(response.data.payload)
@@ -36,6 +35,7 @@ function LoginPage() {
                 showToast(error.response.data.errorMessage, "error")
             } else {
                 console.log(error)
+                showToast(`Login failed: ${error}`, "error")
             }
         }
     }
@@ -69,11 +69,11 @@ function LoginPage() {
                             Login
                         </Button>
                         <Typography variant="h6" align="center" fontWeight={300} mb={3}>
-  New to WanderMemo? Create your account{" "}
-  <Link component={RouterLink} to="/signup" underline="hover" sx={{ fontWeight: 600 }}>
-    here
-  </Link>
-</Typography>
+                            New to WanderMemo? Create your account{" "}
+                            <Link component={RouterLink} to="/signup" underline="hover" sx={{ fontWeight: 600 }}>
+                                here
+                            </Link>
+                        </Typography>
                     </Stack>
                 </CardContent>
             </Card>

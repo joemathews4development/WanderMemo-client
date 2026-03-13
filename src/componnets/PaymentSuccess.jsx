@@ -6,6 +6,7 @@ import { Box, Card, CardContent, Typography, Button } from "@mui/material"
 import CheckCircleIcon from "@mui/icons-material/CheckCircle"
 import service from "../services/config.services";
 import { AuthContext } from "../context/auth.context";
+import { ToastContext } from "../context/toast.context";
 
 const PaymentSuccess = () => {
 
@@ -14,7 +15,9 @@ const PaymentSuccess = () => {
 
   const { loggedInUser, setLoggedInUser } = useContext(AuthContext)
 
-  const [isFetching, setIsFetching] = useState(true);
+  const [isFetching, setIsFetching] = useState(true)
+
+  const { showToast } = useContext(ToastContext)
 
   useEffect(() => {
     handleUseEffect();
@@ -43,7 +46,8 @@ const PaymentSuccess = () => {
       setLoggedInUser(updatedUser)
       setIsFetching(false);
     } catch (error) {
-      console.log(error);
+      console.log(error)
+      showToast(`Failed to update payment intent: ${error}`, "error")
     }
   };
 

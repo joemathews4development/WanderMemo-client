@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField, Grid } from "@mui/material";
-import { MODAL_VIEW_MODES as modes } from "./Constants";
+import { MODAL_VIEW_MODES as modes } from "./Constants"
+import { getFormattedInputDate } from "./Constants"
 
 function EditTripModal({ open, onClose, trip, onSave, mode }) {
   const [form, setForm] = useState({
@@ -58,13 +59,13 @@ function EditTripModal({ open, onClose, trip, onSave, mode }) {
           )}
           <Grid size={{xs: 4}}>
             <TextField 
-              label="Start Date" name="startDate" type="date" value={form.startDate}
+              label="Start Date" name="startDate" type="datetime-local" value={getFormattedInputDate(form.startDate)}
               onChange={handleChange} fullWidth slotProps={{ inputLabel: { shrink: true } }} 
             />
           </Grid>
           <Grid size={{xs: 4}}>
             <TextField 
-              label="End Date" name="endDate" type="date" value={form.endDate}
+              label="End Date" name="endDate" type="datetime-local" value={getFormattedInputDate(form.endDate)}
               onChange={handleChange} fullWidth slotProps={{ inputLabel: { shrink: true } }}
             />
           </Grid>

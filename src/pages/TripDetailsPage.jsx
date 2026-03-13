@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import TripHeaderComponent from '../componnets/TripHeaderComponent'
 import service from '../services/config.services'
 import { Box, CircularProgress, Typography } from '@mui/material'
@@ -6,6 +6,7 @@ import TravelMap from '../componnets/TravelMap'
 import TripTimeline from '../componnets/TripTimeline'
 import MemoryGrid from '../componnets/MemoryGrid'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from '../context/auth.context'
 
 function TripDetailsPage() {
 
@@ -13,6 +14,8 @@ function TripDetailsPage() {
     const [memories, setMemories] = useState(null)
 
     const params = useParams()
+
+    const { showToast } = useContext(AuthContext)
 
     useEffect(() => {
         getData()
@@ -27,6 +30,7 @@ function TripDetailsPage() {
             setMemories(memoriesResponse.data)
         } catch (error) {
             console.log(error)
+            showToast(`Loading data failed: ${error}`, "error")
         }
     }
 

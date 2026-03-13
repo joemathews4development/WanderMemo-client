@@ -50,12 +50,11 @@ function SignupPage() {
     }
 
     const handleSignup = async () => {
-        if(!validate()) return
+        if (!validate()) return
         const body = { firstName, lastName, email, password }
         try {
             setLoading(true)
             const response = await service.post(`auth/signup`, body)
-            console.log(response)
             navigate("/login")
             showToast("Successfully created account. Please Login", "success")
         } catch (error) {
@@ -63,7 +62,7 @@ function SignupPage() {
             if (error.response.status === 400) {
                 showToast(error.response.data.errorMessage, "error")
             } else {
-                console.log(error)
+                showToast(`Signup failed: ${error}`, "error")
             }
         } finally {
             setLoading(false)
@@ -89,21 +88,21 @@ function SignupPage() {
                         Create your Account
                     </Typography>
                     <Stack spacing={2}>
-                        <TextField 
+                        <TextField
                             label="First Name" slotProps={{ input: { autoCapitalize: "words" } }} error={Boolean(errors.firstName)}
-                            helperText={errors.firstName} value={firstName} onChange={handleFirstNameChange} sx={textfieldStyle} variant='outlined' 
+                            helperText={errors.firstName} value={firstName} onChange={handleFirstNameChange} sx={textfieldStyle} variant='outlined'
                         />
-                        <TextField 
+                        <TextField
                             label="Last Name" slotProps={{ input: { autoCapitalize: "words" } }} error={Boolean(errors.lastName)}
-                            helperText={errors.lastName} value={lastName} onChange={handleLastNameChange} sx={textfieldStyle} variant='outlined' 
+                            helperText={errors.lastName} value={lastName} onChange={handleLastNameChange} sx={textfieldStyle} variant='outlined'
                         />
-                        <TextField 
+                        <TextField
                             label="Email" type='email' value={email} error={Boolean(errors.email)}
-                            helperText={errors.email} onChange={handleEmailChange} sx={textfieldStyle} variant='outlined' 
+                            helperText={errors.email} onChange={handleEmailChange} sx={textfieldStyle} variant='outlined'
                         />
                         <TextField
                             label="Password" type='password' value={password} error={Boolean(errors.password)}
-                            helperText={errors.password} onChange={handlePasswordChange} sx={textfieldStyle} variant='outlined' 
+                            helperText={errors.password} onChange={handlePasswordChange} sx={textfieldStyle} variant='outlined'
                         />
                         <Button variant='contained' size='large' disabled={loading} onClick={handleSignup} sx={{
                             ...textfieldStyle, mt: 1, py: 2, borderRadius: 3, fontWeight: 600
@@ -111,11 +110,11 @@ function SignupPage() {
                             Create Account
                         </Button>
                         <Typography variant="h6" align="center" fontWeight={300} mb={3}>
-  Alrerady a WanderMemo member? Login to your account{" "}
-  <Link component={RouterLink} to="/login" underline="hover" sx={{ fontWeight: 600 }}>
-    here
-  </Link>
-</Typography>
+                            Alrerady a WanderMemo member? Login to your account{" "}
+                            <Link component={RouterLink} to="/login" underline="hover" sx={{ fontWeight: 600 }}>
+                                here
+                            </Link>
+                        </Typography>
                     </Stack>
                 </CardContent>
             </Card>

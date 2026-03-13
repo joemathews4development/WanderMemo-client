@@ -1,12 +1,14 @@
 import { Autocomplete, TextField } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import service from "../services/config.services";
+import { ToastContext } from "../context/toast.context";
 
 function CitySelector({ value, onChange, disabled }) {
 
   const [options, setOptions] = useState([]);
   const [inputValue, setInputValue] = useState(value?.city || "");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const {showToast} = useContext(ToastContext)
 
   // debounce logic
   useEffect(() => {
@@ -27,6 +29,7 @@ function CitySelector({ value, onChange, disabled }) {
         setOptions(res.data);
       } catch (error) {
         console.log(error)
+        showToast(`Loading cities failed: ${error}`, "error")
       }
 
     };

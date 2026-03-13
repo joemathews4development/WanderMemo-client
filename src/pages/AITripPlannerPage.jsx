@@ -31,6 +31,7 @@ function AITripPlannerPage() {
                 setOptions(res.data);
             } catch (error) {
                 console.log(error)
+                showToast(`Loading cities failed: ${error}`, "error")
             }
 
         };

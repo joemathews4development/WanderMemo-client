@@ -2,7 +2,6 @@ import { Avatar, Box, Button, Paper, Stack, Typography } from '@mui/material'
 import React from 'react'
 
 function FollowRequests({ requests, updateRequest }) {
-    console.log(requests)
     if (requests.length === 0) {
         return(
         <Typography variant="h5" sx={{textAlign:"center", my:4}}>There are no pending requests</Typography>

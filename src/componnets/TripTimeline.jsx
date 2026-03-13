@@ -3,6 +3,7 @@ import { Box, Card, CardContent, Chip, ImageList, ImageListItem, Typography } fr
 import { useState } from 'react'
 import MemoryDetailsModal from './MemoryDetailsModalComponent'
 import { MODAL_VIEW_MODES as modes } from './Constants'
+import { displayableDateTime } from "./Constants"
 
 function TripTimeline({ memories, reloadData }) {
     const [open, setOpen] = useState(false)
@@ -26,7 +27,7 @@ function TripTimeline({ memories, reloadData }) {
                             setSelectedMemory(memory)
                             setOpen(true)
                             }}>
-                            <TimelineOppositeContent color='text.secondary'>{new Date(memory.date).toLocaleString()}</TimelineOppositeContent>
+                            <TimelineOppositeContent color='text.secondary'>{displayableDateTime(memory.date)}</TimelineOppositeContent>
                             <TimelineSeparator>
                                 <TimelineDot color='primary' />
                                 <TimelineConnector />

@@ -36,6 +36,7 @@ function HomePage() {
             setFollowRequests(followRequestsData)
         } catch (error) {
             console.log(error)
+            showToast(`Loading data failed: ${error}`, "error")
         }
     }
 
@@ -46,6 +47,7 @@ function HomePage() {
             setTrips(tripsData)
         } catch (error) {
             console.log(error)
+            showToast(`Loading trips failed: ${error}`, "error")
         }
     }
 
@@ -56,6 +58,7 @@ function HomePage() {
             setFollowRequests(followRequestsData)
         } catch (error) {
             console.log(error)
+            showToast(`Loading follow requests failed: ${error}`, "error")
         }
     }
 
