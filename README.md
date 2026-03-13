@@ -132,6 +132,18 @@ AI tools were used as a **development aid**, while the final implementation, arc
 
 ---
 
+## Project
+
+### Repository (Client)
+
+[Frontend application](https://github.com/joemathews4development/WanderMemo-client)
+
+### Repository (Server)
+
+[Backend API](https://github.com/joemathews4development/WanderMemo-server)
+
+---
+
 ## 👨‍💻 Author
 
 Developed independently as a full-stack project.
