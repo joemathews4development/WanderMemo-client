@@ -41,7 +41,7 @@ function MemoryFeedCard(props) {
         <Card sx={{ mb: 3 }}>
             <CardHeader
                 avatar={
-                    <Avatar /*src={memory.user.profileImage}*/>
+                    <Avatar src={memory.user.profileImage}>
                         {memory.user.firstName?.[0]}
                     </Avatar>
                 }

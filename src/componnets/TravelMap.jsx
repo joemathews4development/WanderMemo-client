@@ -13,7 +13,13 @@ function TravelMap({ trips, screenMode }) {
     })
     L.Marker.prototype.options.icon = DefaultIcon
     const isScreenForTrips = screenMode === "Trips"
-    const cities = trips.flatMap(trip => trip.cities)
+    const cities = [
+        ...new Map(
+            trips
+                .flatMap(trip => trip.cities)
+                .map(city => [city._id.toString(), city])
+        ).values()
+    ]
     const center = isScreenForTrips ? [20, 0] : cities.length > 0 ? [cities[0].latitude, cities[0].longitude] : [20, 0]
     const zoom = isScreenForTrips ? 3 : cities.length > 0 ? 5 : 3
     const height = isScreenForTrips ? "850px" : "400px"

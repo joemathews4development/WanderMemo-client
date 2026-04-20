@@ -21,25 +21,24 @@ function TripTimeline({ memories, reloadData }) {
         <>
             <Timeline position="alternate">
                 {memories.map((item, index) => {
-                    const memory = item._doc
                     return (
-                        <TimelineItem key={memory._id} onClick={() => {
-                            setSelectedMemory(memory)
+                        <TimelineItem key={item._id} onClick={() => {
+                            setSelectedMemory(item)
                             setOpen(true)
                             }}>
-                            <TimelineOppositeContent color='text.secondary'>{displayableDateTime(memory.date)}</TimelineOppositeContent>
+                            <TimelineOppositeContent color='text.secondary'>{displayableDateTime(item.date)}</TimelineOppositeContent>
                             <TimelineSeparator>
                                 <TimelineDot color='primary' />
                                 <TimelineConnector />
                             </TimelineSeparator>
                             <TimelineContent>
                                 <Card sx={{ borderRadius: 3, overflow: "hidden", boxShadow: 3, width: "100%" }}>
-                                    {memory.medias?.length > 0 && (
+                                    {item.medias?.length > 0 && (
                                         <Box sx={{ position: "relative" }}>
-                                            <ImageList cols={memory.medias.length >= 3 ? 3 : memory.medias.length} gap={4}>
-                                                {memory.medias.map((img, index) => (
+                                            <ImageList cols={item.medias.length >= 3 ? 3 : item.medias.length} gap={4}>
+                                                {item.medias.map((img, index) => (
                                                     <ImageListItem key={index}>
-                                                        <img src={img} alt={memory.title} loading="lazy"
+                                                        <img src={img} alt={item.title} loading="lazy"
                                                             style={{
                                                                 width: "100%", maxWidth: "100%", maxHeight: "100%",
                                                                 objectFit: "cover", borderRadius: "8px"
@@ -55,17 +54,17 @@ function TripTimeline({ memories, reloadData }) {
                                                 }}
                                             >
                                                 <Typography variant="h6" sx={{ color: "white", fontWeight: 600 }}>
-                                                    {memory.title}
+                                                    {item.title}
                                                 </Typography>
                                             </Box>
-                                            <Chip label={memory.type} size="small"
+                                            <Chip label={item.type} size="small"
                                                 sx={{ position: "absolute", top: 12, right: 12, background: "white" }}
                                             />
                                         </Box>
                                     )}
                                     <CardContent>
                                         <Typography variant="body2" color="text.secondary" mb={2}>
-                                            {memory.caption}
+                                            {item.caption}
                                         </Typography>
                                         <Box
                                             sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}
@@ -81,7 +80,7 @@ function TripTimeline({ memories, reloadData }) {
                                                 )}
                                             </Box>
                                             <Typography variant="caption" color="text.secondary">
-                                                {new Date(memory.date).toLocaleDateString()}
+                                                {new Date(item.date).toLocaleDateString()}
                                             </Typography>
                                         </Box>
                                     </CardContent>

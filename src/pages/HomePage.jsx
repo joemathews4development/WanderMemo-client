@@ -32,6 +32,7 @@ function HomePage() {
             ])
             const tripsData = tripsResponse.data
             const followRequestsData = followRequestsResponse.data
+            console.log(tripsData)
             setTrips(tripsData)
             setFollowRequests(followRequestsData)
         } catch (error) {
